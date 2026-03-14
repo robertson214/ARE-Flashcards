@@ -1,129 +1,431 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>ARE Flashcards</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARE Flashcards</title>
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#d1d5db;
+      --blue:#2563eb;
+      --blue-hover:#1d4ed8;
+      --green:#059669;
+      --green-hover:#047857;
+      --orange:#d97706;
+      --orange-hover:#b45309;
+      --gray:#4b5563;
+      --gray-hover:#374151;
+    }
 
-body{
-font-family:Arial;
-background:#f3f4f6;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
+    *{box-sizing:border-box}
 
-.card{
-width:420px;
-background:white;
-padding:40px;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,.15);
-text-align:center;
-}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
 
-button{
-margin-top:20px;
-padding:10px 18px;
-border:none;
-border-radius:6px;
-background:#2563eb;
-color:white;
-cursor:pointer;
-}
+    .wrap{
+      max-width:900px;
+      margin:32px auto;
+      padding:20px;
+    }
 
-button:hover{
-background:#1d4ed8;
-}
+    h1{
+      margin:0 0 8px;
+      font-size:36px;
+    }
 
-</style>
+    .sub{
+      color:var(--muted);
+      margin-bottom:24px;
+    }
+
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    input, select, button{
+      font-size:14px;
+      border-radius:10px;
+    }
+
+    input, select{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    input{
+      min-width:240px;
+      flex:1;
+    }
+
+    button{
+      border:none;
+      padding:10px 14px;
+      color:#fff;
+      cursor:pointer;
+    }
+
+    .btn-blue{background:var(--blue)}
+    .btn-blue:hover{background:var(--blue-hover)}
+
+    .btn-green{background:var(--green)}
+    .btn-green:hover{background:var(--green-hover)}
+
+    .btn-orange{background:var(--orange)}
+    .btn-orange:hover{background:var(--orange-hover)}
+
+    .btn-gray{background:var(--gray)}
+    .btn-gray:hover{background:var(--gray-hover)}
+
+    .stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .pill{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      color:#374151;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      padding:32px;
+      min-height:320px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .topline{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .label{
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .content{
+      font-size:30px;
+      line-height:1.3;
+      font-weight:700;
+      margin-bottom:24px;
+    }
+
+    .answer{
+      font-size:22px;
+      font-weight:600;
+      line-height:1.45;
+    }
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:24px;
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .hint{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .empty{
+      background:#fff;
+      border-radius:18px;
+      padding:40px;
+      text-align:center;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      color:var(--muted);
+    }
+
+    @media (max-width: 640px){
+      .content{font-size:24px}
+      .answer{font-size:19px}
+      .card{padding:22px}
+      h1{font-size:30px}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <h1>ARE Flashcards</h1>
+    <div class="sub">Study app for ARE terms, formulas, and concepts.</div>
 
-<div class="card">
+    <div class="toolbar">
+      <input id="search" type="text" placeholder="Search cards..." />
+      <select id="filterMode">
+        <option value="all">All Cards</option>
+        <option value="hard">Hard Only</option>
+        <option value="easy">Easy Only</option>
+        <option value="unrated">Unrated Only</option>
+      </select>
+      <button class="btn-gray" onclick="shuffleCards()">Shuffle</button>
+      <button class="btn-gray" onclick="resetDeck()">Reset</button>
+    </div>
 
-<h2 id="question"></h2>
+    <div class="stats">
+      <div class="pill" id="countPill">0 cards</div>
+      <div class="pill" id="progressPill">Card 0 of 0</div>
+      <div class="pill" id="easyPill">Easy: 0</div>
+      <div class="pill" id="hardPill">Hard: 0</div>
+    </div>
 
-<p id="answer" style="display:none"></p>
+    <div id="app"></div>
+  </div>
 
-<button onclick="flip()">Flip</button>
-<br>
-<button onclick="nextCard()">Next</button>
+  <script>
+    const starterCards = [
+      {
+        id: 1,
+        category: "Legal",
+        question: "What is vicarious liability?",
+        answer: "Liability imposed on one party for the actions of another person, such as an employer being responsible for an employee's acts within the scope of employment.",
+        rating: ""
+      },
+      {
+        id: 2,
+        category: "Finance",
+        question: "What is modified accrual accounting?",
+        answer: "Revenue is recorded when earned, while expenses are recorded when paid.",
+        rating: ""
+      },
+      {
+        id: 3,
+        category: "Project Delivery",
+        question: "What is bridging?",
+        answer: "A delivery method in which bridging documents define the owner's requirements, and the design-build entity completes the detailed design and construction.",
+        rating: ""
+      },
+      {
+        id: 4,
+        category: "Practice Management",
+        question: "What does the MacLeamy Curve suggest?",
+        answer: "Projects benefit from allocating more effort early in design, when decisions have the greatest impact and changes are least costly.",
+        rating: ""
+      },
+      {
+        id: 5,
+        category: "Risk",
+        question: "What is betterment?",
+        answer: "The architect is generally responsible only for the added cost caused by an error, not the full cost of an upgrade the owner would have paid for anyway.",
+        rating: ""
+      },
+      {
+        id: 6,
+        category: "Legal",
+        question: "What is the difference between statute of limitations and statute of repose?",
+        answer: "Statute of limitations is the time to file a claim after injury or discovery. Statute of repose is the absolute outer time limit after substantial completion.",
+        rating: ""
+      },
+      {
+        id: 7,
+        category: "Fees",
+        question: "What fee structure balances client cost control and architect fairness?",
+        answer: "Hourly not-to-exceed fee. It pays the architect for actual time while setting a cap for the client.",
+        rating: ""
+      },
+      {
+        id: 8,
+        category: "Accounting",
+        question: "What are other assets on a balance sheet?",
+        answer: "Assets that do not fit normal current or fixed asset categories, such as deposits, prepaid expenses, intangibles, and long-term investments.",
+        rating: ""
+      }
+    ];
 
-</div>
+    let cards = JSON.parse(localStorage.getItem("areCards")) || starterCards;
+    let filteredCards = [];
+    let currentIndex = 0;
+    let showingAnswer = false;
 
-<script>
+    const app = document.getElementById("app");
+    const searchInput = document.getElementById("search");
+    const filterMode = document.getElementById("filterMode");
 
-let cards = [
+    function saveCards(){
+      localStorage.setItem("areCards", JSON.stringify(cards));
+    }
 
-{
-q:"What is vicarious liability?",
-a:"Liability imposed on one party for the actions of another person, such as an employer responsible for employee actions."
-},
+    function updateStats(){
+      const easyCount = cards.filter(c => c.rating === "easy").length;
+      const hardCount = cards.filter(c => c.rating === "hard").length;
 
-{
-q:"What is modified accrual accounting?",
-a:"Revenue is recorded when earned, while expenses are recorded when paid."
-},
+      document.getElementById("countPill").textContent = filteredCards.length + " cards";
+      document.getElementById("progressPill").textContent =
+        filteredCards.length ? `Card ${currentIndex + 1} of ${filteredCards.length}` : "Card 0 of 0";
+      document.getElementById("easyPill").textContent = `Easy: ${easyCount}`;
+      document.getElementById("hardPill").textContent = `Hard: ${hardCount}`;
+    }
 
-{
-q:"What does the MacLeamy Curve recommend?",
-a:"Allocate more effort early in design when decisions have the greatest impact."
-},
+    function applyFilters(){
+      const q = searchInput.value.trim().toLowerCase();
+      const mode = filterMode.value;
 
-{
-q:"What is betterment?",
-a:"The architect is responsible only for the cost difference caused by an error, not the full upgrade cost."
-}
+      filteredCards = cards.filter(card => {
+        const matchSearch =
+          card.question.toLowerCase().includes(q) ||
+          card.answer.toLowerCase().includes(q) ||
+          card.category.toLowerCase().includes(q);
 
-];
+        let matchMode = true;
+        if(mode === "hard") matchMode = card.rating === "hard";
+        if(mode === "easy") matchMode = card.rating === "easy";
+        if(mode === "unrated") matchMode = !card.rating;
 
-let i = 0;
-let showingAnswer = false;
+        return matchSearch && matchMode;
+      });
 
-function render(){
+      if(currentIndex >= filteredCards.length){
+        currentIndex = 0;
+      }
 
-document.getElementById("question").innerText = cards[i].q;
-document.getElementById("answer").innerText = cards[i].a;
+      showingAnswer = false;
+      render();
+    }
 
-document.getElementById("question").style.display = "block";
-document.getElementById("answer").style.display = "none";
+    function render(){
+      updateStats();
 
-showingAnswer = false;
+      if(!filteredCards.length){
+        app.innerHTML = `<div class="empty">No cards match your current search or filter.</div>`;
+        return;
+      }
 
-}
+      const card = filteredCards[currentIndex];
 
-function flip(){
+      app.innerHTML = `
+        <div class="card">
+          <div>
+            <div class="topline">
+              <div class="pill">${card.category}</div>
+              <div class="pill">Rating: ${card.rating || "unrated"}</div>
+            </div>
 
-if(showingAnswer){
-document.getElementById("answer").style.display = "none";
-document.getElementById("question").style.display = "block";
-}else{
-document.getElementById("question").style.display = "none";
-document.getElementById("answer").style.display = "block";
-}
+            <div class="label">${showingAnswer ? "Answer" : "Question"}</div>
 
-showingAnswer = !showingAnswer;
+            ${
+              showingAnswer
+                ? `<div class="answer">${card.answer}</div>`
+                : `<div class="content">${card.question}</div>`
+            }
+          </div>
 
-}
+          <div class="footer">
+            <div class="hint">Space = flip · ← / → = move</div>
+            <div class="controls">
+              <button class="btn-gray" onclick="prevCard()">Prev</button>
+              <button class="btn-blue" onclick="toggleCard()">${showingAnswer ? "Hide Answer" : "Show Answer"}</button>
+              <button class="btn-gray" onclick="nextCard()">Next</button>
+              <button class="btn-green" onclick="rateCurrent('easy')">Mark Easy</button>
+              <button class="btn-orange" onclick="rateCurrent('hard')">Mark Hard</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
-function nextCard(){
+    function toggleCard(){
+      if(!filteredCards.length) return;
+      showingAnswer = !showingAnswer;
+      render();
+    }
 
-i++;
+    function nextCard(){
+      if(!filteredCards.length) return;
+      currentIndex = (currentIndex + 1) % filteredCards.length;
+      showingAnswer = false;
+      render();
+    }
 
-if(i >= cards.length){
-i = 0;
-}
+    function prevCard(){
+      if(!filteredCards.length) return;
+      currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
+      showingAnswer = false;
+      render();
+    }
 
-render();
+    function shuffleCards(){
+      cards = [...cards].sort(() => Math.random() - 0.5);
+      saveCards();
+      applyFilters();
+    }
 
-}
+    function resetDeck(){
+      localStorage.removeItem("areCards");
+      cards = starterCards.map(card => ({ ...card, rating: "" }));
+      searchInput.value = "";
+      filterMode.value = "all";
+      currentIndex = 0;
+      showingAnswer = false;
+      saveCards();
+      applyFilters();
+    }
 
-render();
+    function rateCurrent(value){
+      if(!filteredCards.length) return;
+      const currentCardId = filteredCards[currentIndex].id;
+      cards = cards.map(card =>
+        card.id === currentCardId ? { ...card, rating: value } : card
+      );
+      saveCards();
+      applyFilters();
+    }
 
-</script>
+    searchInput.addEventListener("input", () => {
+      currentIndex = 0;
+      applyFilters();
+    });
 
+    filterMode.addEventListener("change", () => {
+      currentIndex = 0;
+      applyFilters();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(e.code === "Space"){
+        e.preventDefault();
+        toggleCard();
+      }
+      if(e.code === "ArrowRight") nextCard();
+      if(e.code === "ArrowLeft") prevCard();
+    });
+
+    applyFilters();
+  </script>
 </body>
 </html>
