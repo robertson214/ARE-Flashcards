@@ -1,204 +1,129 @@
-import React, { useMemo, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Shuffle, RotateCcw, ChevronLeft, ChevronRight, Eye, EyeOff, Search } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+<!DOCTYPE html>
+<html>
+<head>
+<title>ARE Flashcards</title>
+<style>
 
-const starterCards = [
-  {
-    id: 1,
-    category: "Legal",
-    front: "What is vicarious liability?",
-    back: "Liability imposed on one party for the actions of another person, such as an employer being responsible for an employee's acts within the scope of employment.",
-  },
-  {
-    id: 2,
-    category: "Finance",
-    front: "What is modified accrual accounting?",
-    back: "Revenue is recorded when earned, while expenses are recorded when paid.",
-  },
-  {
-    id: 3,
-    category: "Delivery Methods",
-    front: "What is bridging?",
-    back: "A delivery approach where bridging documents define project requirements, then the design-build contractor completes the detailed design and construction.",
-  },
-  {
-    id: 4,
-    category: "Practice Management",
-    front: "What does the MacLeamy Curve suggest?",
-    back: "Projects benefit from allocating more effort early in design, when decisions have the greatest impact and changes are least costly.",
-  },
-  {
-    id: 5,
-    category: "Risk",
-    front: "What is betterment?",
-    back: "An owner cannot recover the full cost of an upgrade from the architect if part of that cost would have been incurred anyway; the architect is typically only liable for the added difference caused by the error.",
-  },
+body{
+font-family:Arial;
+background:#f3f4f6;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.card{
+width:420px;
+background:white;
+padding:40px;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,.15);
+text-align:center;
+}
+
+button{
+margin-top:20px;
+padding:10px 18px;
+border:none;
+border-radius:6px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2 id="question"></h2>
+
+<p id="answer" style="display:none"></p>
+
+<button onclick="flip()">Flip</button>
+<br>
+<button onclick="nextCard()">Next</button>
+
+</div>
+
+<script>
+
+let cards = [
+
+{
+q:"What is vicarious liability?",
+a:"Liability imposed on one party for the actions of another person, such as an employer responsible for employee actions."
+},
+
+{
+q:"What is modified accrual accounting?",
+a:"Revenue is recorded when earned, while expenses are recorded when paid."
+},
+
+{
+q:"What does the MacLeamy Curve recommend?",
+a:"Allocate more effort early in design when decisions have the greatest impact."
+},
+
+{
+q:"What is betterment?",
+a:"The architect is responsible only for the cost difference caused by an error, not the full upgrade cost."
+}
+
 ];
 
-export default function AREFlashcardViewer() {
-  const [cards, setCards] = useState(starterCards);
-  const [index, setIndex] = useState(0);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [query, setQuery] = useState("");
+let i = 0;
+let showingAnswer = false;
 
-  const filteredCards = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return cards;
-    return cards.filter(
-      (card) =>
-        card.front.toLowerCase().includes(q) ||
-        card.back.toLowerCase().includes(q) ||
-        card.category.toLowerCase().includes(q)
-    );
-  }, [cards, query]);
+function render(){
 
-  const currentIndex = Math.min(index, Math.max(filteredCards.length - 1, 0));
-  const currentCard = filteredCards[currentIndex];
+document.getElementById("question").innerText = cards[i].q;
+document.getElementById("answer").innerText = cards[i].a;
 
-  const goNext = () => {
-    if (!filteredCards.length) return;
-    setShowAnswer(false);
-    setIndex((prev) => (prev + 1) % filteredCards.length);
-  };
+document.getElementById("question").style.display = "block";
+document.getElementById("answer").style.display = "none";
 
-  const goPrev = () => {
-    if (!filteredCards.length) return;
-    setShowAnswer(false);
-    setIndex((prev) => (prev - 1 + filteredCards.length) % filteredCards.length);
-  };
+showingAnswer = false;
 
-  const shuffleCards = () => {
-    const shuffled = [...cards].sort(() => Math.random() - 0.5);
-    setCards(shuffled);
-    setIndex(0);
-    setShowAnswer(false);
-  };
-
-  const resetDeck = () => {
-    setCards(starterCards);
-    setIndex(0);
-    setQuery("");
-    setShowAnswer(false);
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-50 p-6 md:p-10">
-      <div className="mx-auto max-w-5xl space-y-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900">ARE Flashcard Viewer</h1>
-            <p className="mt-2 text-sm text-slate-600">
-              Study Practice Management terms in a clean browser-based deck.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={shuffleCards} className="rounded-2xl">
-              <Shuffle className="mr-2 h-4 w-4" /> Shuffle
-            </Button>
-            <Button variant="outline" onClick={resetDeck} className="rounded-2xl">
-              <RotateCcw className="mr-2 h-4 w-4" /> Reset
-            </Button>
-          </div>
-        </div>
-
-        <Card className="rounded-3xl shadow-sm">
-          <CardContent className="p-4 md:p-6">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center gap-3">
-                <Badge variant="secondary" className="rounded-xl px-3 py-1 text-xs">
-                  {filteredCards.length} cards
-                </Badge>
-                {currentCard && (
-                  <Badge variant="outline" className="rounded-xl px-3 py-1 text-xs">
-                    {currentCard.category}
-                  </Badge>
-                )}
-              </div>
-              <div className="relative w-full md:max-w-sm">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                <Input
-                  value={query}
-                  onChange={(e) => {
-                    setQuery(e.target.value);
-                    setIndex(0);
-                    setShowAnswer(false);
-                  }}
-                  placeholder="Search cards..."
-                  className="rounded-2xl pl-9"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`${currentIndex}-${showAnswer ? "back" : "front"}`}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Card className="min-h-[340px] rounded-[2rem] border-0 shadow-lg">
-              <CardContent className="flex min-h-[340px] flex-col justify-between p-8 md:p-10">
-                {currentCard ? (
-                  <>
-                    <div className="space-y-4">
-                      <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">
-                        {showAnswer ? "Answer" : "Question"}
-                      </p>
-                      <div className="text-2xl font-semibold leading-tight text-slate-900 md:text-3xl">
-                        {showAnswer ? currentCard.back : currentCard.front}
-                      </div>
-                    </div>
-
-                    <div className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div className="text-sm text-slate-500">
-                        Card {filteredCards.length ? currentIndex + 1 : 0} of {filteredCards.length}
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        <Button onClick={goPrev} variant="outline" className="rounded-2xl">
-                          <ChevronLeft className="mr-2 h-4 w-4" /> Prev
-                        </Button>
-                        <Button onClick={() => setShowAnswer((v) => !v)} className="rounded-2xl">
-                          {showAnswer ? (
-                            <><EyeOff className="mr-2 h-4 w-4" /> Hide Answer</>
-                          ) : (
-                            <><Eye className="mr-2 h-4 w-4" /> Show Answer</>
-                          )}
-                        </Button>
-                        <Button onClick={goNext} variant="outline" className="rounded-2xl">
-                          Next <ChevronRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex min-h-[260px] items-center justify-center text-center text-slate-500">
-                    No cards match your search.
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-        </AnimatePresence>
-
-        <Card className="rounded-3xl shadow-sm">
-          <CardContent className="p-6">
-            <h2 className="text-lg font-semibold text-slate-900">How to expand this</h2>
-            <div className="mt-3 grid gap-3 md:grid-cols-2">
-              <div className="rounded-2xl border p-4 text-sm text-slate-600">Add import from CSV so you can paste a full Practice Management deck.</div>
-              <div className="rounded-2xl border p-4 text-sm text-slate-600">Add spaced repetition tags like Easy, Medium, Hard, and Missed.</div>
-              <div className="rounded-2xl border p-4 text-sm text-slate-600">Split decks by exam division: PcM, PjM, CE, PA, PPD, PDD.</div>
-              <div className="rounded-2xl border p-4 text-sm text-slate-600">Track progress with a mastered counter and review queue.</div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
 }
+
+function flip(){
+
+if(showingAnswer){
+document.getElementById("answer").style.display = "none";
+document.getElementById("question").style.display = "block";
+}else{
+document.getElementById("question").style.display = "none";
+document.getElementById("answer").style.display = "block";
+}
+
+showingAnswer = !showingAnswer;
+
+}
+
+function nextCard(){
+
+i++;
+
+if(i >= cards.length){
+i = 0;
+}
+
+render();
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
