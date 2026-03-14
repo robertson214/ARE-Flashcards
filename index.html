@@ -21,7 +21,7 @@
       --gray-hover:#374151;
     }
 
-    *{box-sizing:border-box}
+    * { box-sizing:border-box; }
 
     body{
       margin:0;
@@ -76,17 +76,17 @@
       cursor:pointer;
     }
 
-    .btn-blue{background:var(--blue)}
-    .btn-blue:hover{background:var(--blue-hover)}
+    .btn-blue{ background:var(--blue); }
+    .btn-blue:hover{ background:var(--blue-hover); }
 
-    .btn-green{background:var(--green)}
-    .btn-green:hover{background:var(--green-hover)}
+    .btn-green{ background:var(--green); }
+    .btn-green:hover{ background:var(--green-hover); }
 
-    .btn-orange{background:var(--orange)}
-    .btn-orange:hover{background:var(--orange-hover)}
+    .btn-orange{ background:var(--orange); }
+    .btn-orange:hover{ background:var(--orange-hover); }
 
-    .btn-gray{background:var(--gray)}
-    .btn-gray:hover{background:var(--gray-hover)}
+    .btn-gray{ background:var(--gray); }
+    .btn-gray:hover{ background:var(--gray-hover); }
 
     .stats{
       display:flex;
@@ -174,10 +174,10 @@
     }
 
     @media (max-width: 640px){
-      .content{font-size:24px}
-      .answer{font-size:19px}
-      .card{padding:22px}
-      h1{font-size:30px}
+      .content{ font-size:24px; }
+      .answer{ font-size:19px; }
+      .card{ padding:22px; }
+      h1{ font-size:30px; }
     }
   </style>
 </head>
@@ -210,7 +210,6 @@
 
   <script>
     const starterCards = [
-
       { id:1, category:"Finance", question:"What is net multiplier?", answer:"Net operating revenue divided by direct labor.", rating:"" },
       { id:2, category:"Finance", question:"What is utilization rate?", answer:"Direct labor divided by total labor.", rating:"" },
       { id:3, category:"Finance", question:"What is break-even rate?", answer:"(Indirect expenses + direct labor) divided by direct labor.", rating:"" },
@@ -265,7 +264,6 @@
       { id:48, category:"Fees", question:"What is value-based pricing?", answer:"Fee based on perceived value rather than cost.", rating:"" },
       { id:49, category:"Fees", question:"What is a contingency?", answer:"Reserved funds to cover unforeseen project costs.", rating:"" },
       { id:50, category:"Fees", question:"Why use an hourly not-to-exceed contract?", answer:"It protects the client from unlimited cost while ensuring fair pay for the architect.", rating:"" }
-
     ];
 
     let cards = JSON.parse(localStorage.getItem("areCards")) || starterCards;
@@ -287,9 +285,9 @@
 
       document.getElementById("countPill").textContent = filteredCards.length + " cards";
       document.getElementById("progressPill").textContent =
-        filteredCards.length ? `Card ${currentIndex + 1} of ${filteredCards.length}` : "Card 0 of 0";
-      document.getElementById("easyPill").textContent = `Easy: ${easyCount}`;
-      document.getElementById("hardPill").textContent = `Hard: ${hardCount}`;
+        filteredCards.length ? "Card " + (currentIndex + 1) + " of " + filteredCards.length : "Card 0 of 0";
+      document.getElementById("easyPill").textContent = "Easy: " + easyCount;
+      document.getElementById("hardPill").textContent = "Hard: " + hardCount;
     }
 
     function applyFilters(){
@@ -322,7 +320,7 @@
       updateStats();
 
       if(!filteredCards.length){
-        app.innerHTML = `<div class="empty">No cards match your current search or filter.</div>`;
+        app.innerHTML = '<div class="empty">No cards match your current search or filter.</div>';
         return;
       }
 
@@ -338,10 +336,9 @@
 
             <div class="label">${showingAnswer ? "Answer" : "Question"}</div>
 
-            ${
-              showingAnswer
-                ? `<div class="answer">${card.answer}</div>`
-                : `<div class="content">${card.question}</div>`
+            ${showingAnswer
+              ? `<div class="answer">${card.answer}</div>`
+              : `<div class="content">${card.question}</div>`
             }
           </div>
 
