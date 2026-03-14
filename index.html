@@ -210,63 +210,62 @@
 
   <script>
     const starterCards = [
-      {
-        id: 1,
-        category: "Legal",
-        question: "What is vicarious liability?",
-        answer: "Liability imposed on one party for the actions of another person, such as an employer being responsible for an employee's acts within the scope of employment.",
-        rating: ""
-      },
-      {
-        id: 2,
-        category: "Finance",
-        question: "What is modified accrual accounting?",
-        answer: "Revenue is recorded when earned, while expenses are recorded when paid.",
-        rating: ""
-      },
-      {
-        id: 3,
-        category: "Project Delivery",
-        question: "What is bridging?",
-        answer: "A delivery method in which bridging documents define the owner's requirements, and the design-build entity completes the detailed design and construction.",
-        rating: ""
-      },
-      {
-        id: 4,
-        category: "Practice Management",
-        question: "What does the MacLeamy Curve suggest?",
-        answer: "Projects benefit from allocating more effort early in design, when decisions have the greatest impact and changes are least costly.",
-        rating: ""
-      },
-      {
-        id: 5,
-        category: "Risk",
-        question: "What is betterment?",
-        answer: "The architect is generally responsible only for the added cost caused by an error, not the full cost of an upgrade the owner would have paid for anyway.",
-        rating: ""
-      },
-      {
-        id: 6,
-        category: "Legal",
-        question: "What is the difference between statute of limitations and statute of repose?",
-        answer: "Statute of limitations is the time to file a claim after injury or discovery. Statute of repose is the absolute outer time limit after substantial completion.",
-        rating: ""
-      },
-      {
-        id: 7,
-        category: "Fees",
-        question: "What fee structure balances client cost control and architect fairness?",
-        answer: "Hourly not-to-exceed fee. It pays the architect for actual time while setting a cap for the client.",
-        rating: ""
-      },
-      {
-        id: 8,
-        category: "Accounting",
-        question: "What are other assets on a balance sheet?",
-        answer: "Assets that do not fit normal current or fixed asset categories, such as deposits, prepaid expenses, intangibles, and long-term investments.",
-        rating: ""
-      }
-    ];
+{ id:1, category:"Finance", question:"What is net multiplier?", answer:"Net operating revenue divided by direct labor.", rating:"" },
+{ id:2, category:"Finance", question:"What is utilization rate?", answer:"Direct labor divided by total labor.", rating:"" },
+{ id:3, category:"Finance", question:"What is break-even rate?", answer:"(Indirect expenses + direct labor) divided by direct labor.", rating:"" },
+{ id:4, category:"Finance", question:"What is net operating revenue?", answer:"Gross revenue minus consultant fees and reimbursable expenses.", rating:"" },
+{ id:5, category:"Finance", question:"What is overhead?", answer:"Indirect expenses required to run the firm.", rating:"" },
+{ id:6, category:"Finance", question:"What are indirect expenses?", answer:"Expenses not directly tied to a specific project, such as rent or admin salaries.", rating:"" },
+{ id:7, category:"Finance", question:"What is direct labor?", answer:"Employee labor that can be billed directly to a project.", rating:"" },
+{ id:8, category:"Finance", question:"What does a multiplier represent?", answer:"How many dollars of revenue are generated for every dollar of direct labor.", rating:"" },
+{ id:9, category:"Finance", question:"What does the break-even rate determine?", answer:"The billing multiple needed to cover expenses with no profit.", rating:"" },
+{ id:10, category:"Finance", question:"What is profit?", answer:"Net operating revenue minus total expenses.", rating:"" },
+
+{ id:11, category:"Accounting", question:"What is accrual accounting?", answer:"Revenue and expenses recorded when earned or incurred.", rating:"" },
+{ id:12, category:"Accounting", question:"What is cash accounting?", answer:"Revenue and expenses recorded when cash changes hands.", rating:"" },
+{ id:13, category:"Accounting", question:"What is modified accrual accounting?", answer:"Revenue recorded when earned, expenses recorded when paid.", rating:"" },
+{ id:14, category:"Accounting", question:"What are current assets?", answer:"Assets expected to be converted to cash within one year.", rating:"" },
+{ id:15, category:"Accounting", question:"What are liabilities?", answer:"Financial obligations owed by the firm.", rating:"" },
+{ id:16, category:"Accounting", question:"What is working capital?", answer:"Current assets minus current liabilities.", rating:"" },
+{ id:17, category:"Accounting", question:"What is equity?", answer:"Owner's share of the firm after liabilities are subtracted from assets.", rating:"" },
+{ id:18, category:"Accounting", question:"What are other assets?", answer:"Assets that don't fit standard categories such as deposits or intangible assets.", rating:"" },
+{ id:19, category:"Accounting", question:"What is accounts receivable?", answer:"Money owed to the firm for services performed.", rating:"" },
+{ id:20, category:"Accounting", question:"What is work-in-progress (WIP)?", answer:"Work completed but not yet billed.", rating:"" },
+
+{ id:21, category:"Legal", question:"What is standard of care?", answer:"The level of skill and care expected of a reasonably competent architect.", rating:"" },
+{ id:22, category:"Legal", question:"What is betterment?", answer:"Architect is liable only for added cost caused by an error, not the entire upgrade cost.", rating:"" },
+{ id:23, category:"Legal", question:"What is vicarious liability?", answer:"Liability for actions of employees acting within scope of employment.", rating:"" },
+{ id:24, category:"Legal", question:"What is indemnification?", answer:"Agreement to compensate another party for loss or damage.", rating:"" },
+{ id:25, category:"Legal", question:"What is negligence?", answer:"Failure to exercise reasonable care resulting in damage.", rating:"" },
+{ id:26, category:"Legal", question:"What is a statute of limitations?", answer:"Time limit to file a lawsuit after harm is discovered.", rating:"" },
+{ id:27, category:"Legal", question:"What is a statute of repose?", answer:"Absolute deadline to file claims after project completion.", rating:"" },
+{ id:28, category:"Legal", question:"What is professional liability insurance?", answer:"Insurance covering claims of professional negligence.", rating:"" },
+{ id:29, category:"Legal", question:"What is a change order?", answer:"A written modification to the construction contract.", rating:"" },
+{ id:30, category:"Legal", question:"What is mediation?", answer:"A non-binding dispute resolution facilitated by a neutral party.", rating:"" },
+
+{ id:31, category:"Practice", question:"What does the MacLeamy Curve show?", answer:"Effort should shift earlier in design to improve outcomes.", rating:"" },
+{ id:32, category:"Practice", question:"What is IPD?", answer:"Integrated Project Delivery where owner, architect, and contractor collaborate early.", rating:"" },
+{ id:33, category:"Practice", question:"What is design-bid-build?", answer:"Traditional delivery method with separate design and construction contracts.", rating:"" },
+{ id:34, category:"Practice", question:"What is design-build?", answer:"One entity responsible for both design and construction.", rating:"" },
+{ id:35, category:"Practice", question:"What is bridging?", answer:"Architect prepares bridging documents then design-builder completes design.", rating:"" },
+{ id:36, category:"Practice", question:"What is fast-track construction?", answer:"Construction begins before design is fully complete.", rating:"" },
+{ id:37, category:"Practice", question:"What is a sole proprietorship?", answer:"Business owned by one individual with personal liability.", rating:"" },
+{ id:38, category:"Practice", question:"What is a partnership?", answer:"Business owned by two or more individuals.", rating:"" },
+{ id:39, category:"Practice", question:"What is an LLC?", answer:"Limited liability company protecting owners from personal liability.", rating:"" },
+{ id:40, category:"Practice", question:"What is an LLP?", answer:"Limited liability partnership protecting partners from certain liabilities.", rating:"" },
+
+{ id:41, category:"Fees", question:"What is an hourly fee?", answer:"Client pays for actual time spent on the project.", rating:"" },
+{ id:42, category:"Fees", question:"What is an hourly not-to-exceed fee?", answer:"Hourly billing capped at a maximum amount.", rating:"" },
+{ id:43, category:"Fees", question:"What is a fixed fee?", answer:"A predetermined lump sum payment.", rating:"" },
+{ id:44, category:"Fees", question:"What is percentage-of-construction-cost fee?", answer:"Architect fee based on percentage of project construction cost.", rating:"" },
+{ id:45, category:"Fees", question:"What is cost-plus fee?", answer:"Client pays expenses plus an additional fee.", rating:"" },
+{ id:46, category:"Fees", question:"What are reimbursable expenses?", answer:"Costs paid by the architect but reimbursed by the client.", rating:"" },
+{ id:47, category:"Fees", question:"What is a retainer?", answer:"Upfront payment credited toward future services.", rating:"" },
+{ id:48, category:"Fees", question:"What is value-based pricing?", answer:"Fee based on perceived value rather than cost.", rating:"" },
+{ id:49, category:"Fees", question:"What is a contingency?", answer:"Reserved funds to cover unforeseen project costs.", rating:"" },
+{ id:50, category:"Fees", question:"Why use an hourly not-to-exceed contract?", answer:"It protects the client from unlimited cost while ensuring fair pay for the architect.", rating:"" }
+
+];
 
     let cards = JSON.parse(localStorage.getItem("areCards")) || starterCards;
     let filteredCards = [];
