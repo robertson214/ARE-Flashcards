@@ -1,58 +1,431 @@
-const starterCards = [
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARE Flashcards</title>
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#d1d5db;
+      --blue:#2563eb;
+      --blue-hover:#1d4ed8;
+      --green:#059669;
+      --green-hover:#047857;
+      --orange:#d97706;
+      --orange-hover:#b45309;
+      --gray:#4b5563;
+      --gray-hover:#374151;
+    }
 
-{ id:1, category:"Finance", question:"What is net multiplier?", answer:"Net operating revenue divided by direct labor.", rating:"" },
-{ id:2, category:"Finance", question:"What is utilization rate?", answer:"Direct labor divided by total labor.", rating:"" },
-{ id:3, category:"Finance", question:"What is break-even rate?", answer:"(Indirect expenses + direct labor) divided by direct labor.", rating:"" },
-{ id:4, category:"Finance", question:"What is net operating revenue?", answer:"Gross revenue minus consultant fees and reimbursable expenses.", rating:"" },
-{ id:5, category:"Finance", question:"What is overhead?", answer:"Indirect expenses required to run the firm.", rating:"" },
-{ id:6, category:"Finance", question:"What are indirect expenses?", answer:"Expenses not directly tied to a specific project, such as rent or admin salaries.", rating:"" },
-{ id:7, category:"Finance", question:"What is direct labor?", answer:"Employee labor that can be billed directly to a project.", rating:"" },
-{ id:8, category:"Finance", question:"What does a multiplier represent?", answer:"How many dollars of revenue are generated for every dollar of direct labor.", rating:"" },
-{ id:9, category:"Finance", question:"What does the break-even rate determine?", answer:"The billing multiple needed to cover expenses with no profit.", rating:"" },
-{ id:10, category:"Finance", question:"What is profit?", answer:"Net operating revenue minus total expenses.", rating:"" },
+    *{box-sizing:border-box}
 
-{ id:11, category:"Accounting", question:"What is accrual accounting?", answer:"Revenue and expenses recorded when earned or incurred.", rating:"" },
-{ id:12, category:"Accounting", question:"What is cash accounting?", answer:"Revenue and expenses recorded when cash changes hands.", rating:"" },
-{ id:13, category:"Accounting", question:"What is modified accrual accounting?", answer:"Revenue recorded when earned, expenses recorded when paid.", rating:"" },
-{ id:14, category:"Accounting", question:"What are current assets?", answer:"Assets expected to be converted to cash within one year.", rating:"" },
-{ id:15, category:"Accounting", question:"What are liabilities?", answer:"Financial obligations owed by the firm.", rating:"" },
-{ id:16, category:"Accounting", question:"What is working capital?", answer:"Current assets minus current liabilities.", rating:"" },
-{ id:17, category:"Accounting", question:"What is equity?", answer:"Owner's share of the firm after liabilities are subtracted from assets.", rating:"" },
-{ id:18, category:"Accounting", question:"What are other assets?", answer:"Assets that don't fit standard categories such as deposits or intangible assets.", rating:"" },
-{ id:19, category:"Accounting", question:"What is accounts receivable?", answer:"Money owed to the firm for services performed.", rating:"" },
-{ id:20, category:"Accounting", question:"What is work-in-progress (WIP)?", answer:"Work completed but not yet billed.", rating:"" },
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
 
-{ id:21, category:"Legal", question:"What is standard of care?", answer:"The level of skill and care expected of a reasonably competent architect.", rating:"" },
-{ id:22, category:"Legal", question:"What is betterment?", answer:"Architect is liable only for added cost caused by an error, not the entire upgrade cost.", rating:"" },
-{ id:23, category:"Legal", question:"What is vicarious liability?", answer:"Liability for actions of employees acting within scope of employment.", rating:"" },
-{ id:24, category:"Legal", question:"What is indemnification?", answer:"Agreement to compensate another party for loss or damage.", rating:"" },
-{ id:25, category:"Legal", question:"What is negligence?", answer:"Failure to exercise reasonable care resulting in damage.", rating:"" },
-{ id:26, category:"Legal", question:"What is a statute of limitations?", answer:"Time limit to file a lawsuit after harm is discovered.", rating:"" },
-{ id:27, category:"Legal", question:"What is a statute of repose?", answer:"Absolute deadline to file claims after project completion.", rating:"" },
-{ id:28, category:"Legal", question:"What is professional liability insurance?", answer:"Insurance covering claims of professional negligence.", rating:"" },
-{ id:29, category:"Legal", question:"What is a change order?", answer:"A written modification to the construction contract.", rating:"" },
-{ id:30, category:"Legal", question:"What is mediation?", answer:"A non-binding dispute resolution facilitated by a neutral party.", rating:"" },
+    .wrap{
+      max-width:900px;
+      margin:32px auto;
+      padding:20px;
+    }
 
-{ id:31, category:"Practice", question:"What does the MacLeamy Curve show?", answer:"Effort should shift earlier in design to improve outcomes.", rating:"" },
-{ id:32, category:"Practice", question:"What is IPD?", answer:"Integrated Project Delivery where owner, architect, and contractor collaborate early.", rating:"" },
-{ id:33, category:"Practice", question:"What is design-bid-build?", answer:"Traditional delivery method with separate design and construction contracts.", rating:"" },
-{ id:34, category:"Practice", question:"What is design-build?", answer:"One entity responsible for both design and construction.", rating:"" },
-{ id:35, category:"Practice", question:"What is bridging?", answer:"Architect prepares bridging documents then design-builder completes design.", rating:"" },
-{ id:36, category:"Practice", question:"What is fast-track construction?", answer:"Construction begins before design is fully complete.", rating:"" },
-{ id:37, category:"Practice", question:"What is a sole proprietorship?", answer:"Business owned by one individual with personal liability.", rating:"" },
-{ id:38, category:"Practice", question:"What is a partnership?", answer:"Business owned by two or more individuals.", rating:"" },
-{ id:39, category:"Practice", question:"What is an LLC?", answer:"Limited liability company protecting owners from personal liability.", rating:"" },
-{ id:40, category:"Practice", question:"What is an LLP?", answer:"Limited liability partnership protecting partners from certain liabilities.", rating:"" },
+    h1{
+      margin:0 0 8px;
+      font-size:36px;
+    }
 
-{ id:41, category:"Fees", question:"What is an hourly fee?", answer:"Client pays for actual time spent on the project.", rating:"" },
-{ id:42, category:"Fees", question:"What is an hourly not-to-exceed fee?", answer:"Hourly billing capped at a maximum amount.", rating:"" },
-{ id:43, category:"Fees", question:"What is a fixed fee?", answer:"A predetermined lump sum payment.", rating:"" },
-{ id:44, category:"Fees", question:"What is percentage-of-construction-cost fee?", answer:"Architect fee based on percentage of project construction cost.", rating:"" },
-{ id:45, category:"Fees", question:"What is cost-plus fee?", answer:"Client pays expenses plus an additional fee.", rating:"" },
-{ id:46, category:"Fees", question:"What are reimbursable expenses?", answer:"Costs paid by the architect but reimbursed by the client.", rating:"" },
-{ id:47, category:"Fees", question:"What is a retainer?", answer:"Upfront payment credited toward future services.", rating:"" },
-{ id:48, category:"Fees", question:"What is value-based pricing?", answer:"Fee based on perceived value rather than cost.", rating:"" },
-{ id:49, category:"Fees", question:"What is a contingency?", answer:"Reserved funds to cover unforeseen project costs.", rating:"" },
-{ id:50, category:"Fees", question:"Why use an hourly not-to-exceed contract?", answer:"It protects the client from unlimited cost while ensuring fair pay for the architect.", rating:"" }
+    .sub{
+      color:var(--muted);
+      margin-bottom:24px;
+    }
 
-];
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    input, select, button{
+      font-size:14px;
+      border-radius:10px;
+    }
+
+    input, select{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    input{
+      min-width:240px;
+      flex:1;
+    }
+
+    button{
+      border:none;
+      padding:10px 14px;
+      color:#fff;
+      cursor:pointer;
+    }
+
+    .btn-blue{background:var(--blue)}
+    .btn-blue:hover{background:var(--blue-hover)}
+
+    .btn-green{background:var(--green)}
+    .btn-green:hover{background:var(--green-hover)}
+
+    .btn-orange{background:var(--orange)}
+    .btn-orange:hover{background:var(--orange-hover)}
+
+    .btn-gray{background:var(--gray)}
+    .btn-gray:hover{background:var(--gray-hover)}
+
+    .stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .pill{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      color:#374151;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      padding:32px;
+      min-height:320px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .topline{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .label{
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .content{
+      font-size:30px;
+      line-height:1.3;
+      font-weight:700;
+      margin-bottom:24px;
+    }
+
+    .answer{
+      font-size:22px;
+      font-weight:600;
+      line-height:1.45;
+    }
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:24px;
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .hint{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .empty{
+      background:#fff;
+      border-radius:18px;
+      padding:40px;
+      text-align:center;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      color:var(--muted);
+    }
+
+    @media (max-width: 640px){
+      .content{font-size:24px}
+      .answer{font-size:19px}
+      .card{padding:22px}
+      h1{font-size:30px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>ARE Flashcards</h1>
+    <div class="sub">Practice Management deck with 50 study cards.</div>
+
+    <div class="toolbar">
+      <input id="search" type="text" placeholder="Search cards..." />
+      <select id="filterMode">
+        <option value="all">All Cards</option>
+        <option value="hard">Hard Only</option>
+        <option value="easy">Easy Only</option>
+        <option value="unrated">Unrated Only</option>
+      </select>
+      <button class="btn-gray" onclick="shuffleCards()">Shuffle</button>
+      <button class="btn-gray" onclick="resetDeck()">Reset</button>
+    </div>
+
+    <div class="stats">
+      <div class="pill" id="countPill">0 cards</div>
+      <div class="pill" id="progressPill">Card 0 of 0</div>
+      <div class="pill" id="easyPill">Easy: 0</div>
+      <div class="pill" id="hardPill">Hard: 0</div>
+    </div>
+
+    <div id="app"></div>
+  </div>
+
+  <script>
+    const starterCards = [
+
+      { id:1, category:"Finance", question:"What is net multiplier?", answer:"Net operating revenue divided by direct labor.", rating:"" },
+      { id:2, category:"Finance", question:"What is utilization rate?", answer:"Direct labor divided by total labor.", rating:"" },
+      { id:3, category:"Finance", question:"What is break-even rate?", answer:"(Indirect expenses + direct labor) divided by direct labor.", rating:"" },
+      { id:4, category:"Finance", question:"What is net operating revenue?", answer:"Gross revenue minus consultant fees and reimbursable expenses.", rating:"" },
+      { id:5, category:"Finance", question:"What is overhead?", answer:"Indirect expenses required to run the firm.", rating:"" },
+      { id:6, category:"Finance", question:"What are indirect expenses?", answer:"Expenses not directly tied to a specific project, such as rent or admin salaries.", rating:"" },
+      { id:7, category:"Finance", question:"What is direct labor?", answer:"Employee labor that can be billed directly to a project.", rating:"" },
+      { id:8, category:"Finance", question:"What does a multiplier represent?", answer:"How many dollars of revenue are generated for every dollar of direct labor.", rating:"" },
+      { id:9, category:"Finance", question:"What does the break-even rate determine?", answer:"The billing multiple needed to cover expenses with no profit.", rating:"" },
+      { id:10, category:"Finance", question:"What is profit?", answer:"Net operating revenue minus total expenses.", rating:"" },
+
+      { id:11, category:"Accounting", question:"What is accrual accounting?", answer:"Revenue and expenses recorded when earned or incurred.", rating:"" },
+      { id:12, category:"Accounting", question:"What is cash accounting?", answer:"Revenue and expenses recorded when cash changes hands.", rating:"" },
+      { id:13, category:"Accounting", question:"What is modified accrual accounting?", answer:"Revenue recorded when earned, expenses recorded when paid.", rating:"" },
+      { id:14, category:"Accounting", question:"What are current assets?", answer:"Assets expected to be converted to cash within one year.", rating:"" },
+      { id:15, category:"Accounting", question:"What are liabilities?", answer:"Financial obligations owed by the firm.", rating:"" },
+      { id:16, category:"Accounting", question:"What is working capital?", answer:"Current assets minus current liabilities.", rating:"" },
+      { id:17, category:"Accounting", question:"What is equity?", answer:"Owner's share of the firm after liabilities are subtracted from assets.", rating:"" },
+      { id:18, category:"Accounting", question:"What are other assets?", answer:"Assets that don't fit standard categories such as deposits or intangible assets.", rating:"" },
+      { id:19, category:"Accounting", question:"What is accounts receivable?", answer:"Money owed to the firm for services performed.", rating:"" },
+      { id:20, category:"Accounting", question:"What is work-in-progress (WIP)?", answer:"Work completed but not yet billed.", rating:"" },
+
+      { id:21, category:"Legal", question:"What is standard of care?", answer:"The level of skill and care expected of a reasonably competent architect.", rating:"" },
+      { id:22, category:"Legal", question:"What is betterment?", answer:"Architect is liable only for added cost caused by an error, not the entire upgrade cost.", rating:"" },
+      { id:23, category:"Legal", question:"What is vicarious liability?", answer:"Liability for actions of employees acting within scope of employment.", rating:"" },
+      { id:24, category:"Legal", question:"What is indemnification?", answer:"Agreement to compensate another party for loss or damage.", rating:"" },
+      { id:25, category:"Legal", question:"What is negligence?", answer:"Failure to exercise reasonable care resulting in damage.", rating:"" },
+      { id:26, category:"Legal", question:"What is a statute of limitations?", answer:"Time limit to file a lawsuit after harm is discovered.", rating:"" },
+      { id:27, category:"Legal", question:"What is a statute of repose?", answer:"Absolute deadline to file claims after project completion.", rating:"" },
+      { id:28, category:"Legal", question:"What is professional liability insurance?", answer:"Insurance covering claims of professional negligence.", rating:"" },
+      { id:29, category:"Legal", question:"What is a change order?", answer:"A written modification to the construction contract.", rating:"" },
+      { id:30, category:"Legal", question:"What is mediation?", answer:"A non-binding dispute resolution facilitated by a neutral party.", rating:"" },
+
+      { id:31, category:"Practice", question:"What does the MacLeamy Curve show?", answer:"Effort should shift earlier in design to improve outcomes.", rating:"" },
+      { id:32, category:"Practice", question:"What is IPD?", answer:"Integrated Project Delivery where owner, architect, and contractor collaborate early.", rating:"" },
+      { id:33, category:"Practice", question:"What is design-bid-build?", answer:"Traditional delivery method with separate design and construction contracts.", rating:"" },
+      { id:34, category:"Practice", question:"What is design-build?", answer:"One entity responsible for both design and construction.", rating:"" },
+      { id:35, category:"Practice", question:"What is bridging?", answer:"Architect prepares bridging documents then design-builder completes design.", rating:"" },
+      { id:36, category:"Practice", question:"What is fast-track construction?", answer:"Construction begins before design is fully complete.", rating:"" },
+      { id:37, category:"Practice", question:"What is a sole proprietorship?", answer:"Business owned by one individual with personal liability.", rating:"" },
+      { id:38, category:"Practice", question:"What is a partnership?", answer:"Business owned by two or more individuals.", rating:"" },
+      { id:39, category:"Practice", question:"What is an LLC?", answer:"Limited liability company protecting owners from personal liability.", rating:"" },
+      { id:40, category:"Practice", question:"What is an LLP?", answer:"Limited liability partnership protecting partners from certain liabilities.", rating:"" },
+
+      { id:41, category:"Fees", question:"What is an hourly fee?", answer:"Client pays for actual time spent on the project.", rating:"" },
+      { id:42, category:"Fees", question:"What is an hourly not-to-exceed fee?", answer:"Hourly billing capped at a maximum amount.", rating:"" },
+      { id:43, category:"Fees", question:"What is a fixed fee?", answer:"A predetermined lump sum payment.", rating:"" },
+      { id:44, category:"Fees", question:"What is percentage-of-construction-cost fee?", answer:"Architect fee based on percentage of project construction cost.", rating:"" },
+      { id:45, category:"Fees", question:"What is cost-plus fee?", answer:"Client pays expenses plus an additional fee.", rating:"" },
+      { id:46, category:"Fees", question:"What are reimbursable expenses?", answer:"Costs paid by the architect but reimbursed by the client.", rating:"" },
+      { id:47, category:"Fees", question:"What is a retainer?", answer:"Upfront payment credited toward future services.", rating:"" },
+      { id:48, category:"Fees", question:"What is value-based pricing?", answer:"Fee based on perceived value rather than cost.", rating:"" },
+      { id:49, category:"Fees", question:"What is a contingency?", answer:"Reserved funds to cover unforeseen project costs.", rating:"" },
+      { id:50, category:"Fees", question:"Why use an hourly not-to-exceed contract?", answer:"It protects the client from unlimited cost while ensuring fair pay for the architect.", rating:"" }
+
+    ];
+
+    let cards = JSON.parse(localStorage.getItem("areCards")) || starterCards;
+    let filteredCards = [];
+    let currentIndex = 0;
+    let showingAnswer = false;
+
+    const app = document.getElementById("app");
+    const searchInput = document.getElementById("search");
+    const filterMode = document.getElementById("filterMode");
+
+    function saveCards(){
+      localStorage.setItem("areCards", JSON.stringify(cards));
+    }
+
+    function updateStats(){
+      const easyCount = cards.filter(c => c.rating === "easy").length;
+      const hardCount = cards.filter(c => c.rating === "hard").length;
+
+      document.getElementById("countPill").textContent = filteredCards.length + " cards";
+      document.getElementById("progressPill").textContent =
+        filteredCards.length ? `Card ${currentIndex + 1} of ${filteredCards.length}` : "Card 0 of 0";
+      document.getElementById("easyPill").textContent = `Easy: ${easyCount}`;
+      document.getElementById("hardPill").textContent = `Hard: ${hardCount}`;
+    }
+
+    function applyFilters(){
+      const q = searchInput.value.trim().toLowerCase();
+      const mode = filterMode.value;
+
+      filteredCards = cards.filter(card => {
+        const matchSearch =
+          card.question.toLowerCase().includes(q) ||
+          card.answer.toLowerCase().includes(q) ||
+          card.category.toLowerCase().includes(q);
+
+        let matchMode = true;
+        if(mode === "hard") matchMode = card.rating === "hard";
+        if(mode === "easy") matchMode = card.rating === "easy";
+        if(mode === "unrated") matchMode = !card.rating;
+
+        return matchSearch && matchMode;
+      });
+
+      if(currentIndex >= filteredCards.length){
+        currentIndex = 0;
+      }
+
+      showingAnswer = false;
+      render();
+    }
+
+    function render(){
+      updateStats();
+
+      if(!filteredCards.length){
+        app.innerHTML = `<div class="empty">No cards match your current search or filter.</div>`;
+        return;
+      }
+
+      const card = filteredCards[currentIndex];
+
+      app.innerHTML = `
+        <div class="card">
+          <div>
+            <div class="topline">
+              <div class="pill">${card.category}</div>
+              <div class="pill">Rating: ${card.rating || "unrated"}</div>
+            </div>
+
+            <div class="label">${showingAnswer ? "Answer" : "Question"}</div>
+
+            ${
+              showingAnswer
+                ? `<div class="answer">${card.answer}</div>`
+                : `<div class="content">${card.question}</div>`
+            }
+          </div>
+
+          <div class="footer">
+            <div class="hint">Space = flip · ← / → = move</div>
+            <div class="controls">
+              <button class="btn-gray" onclick="prevCard()">Prev</button>
+              <button class="btn-blue" onclick="toggleCard()">${showingAnswer ? "Hide Answer" : "Show Answer"}</button>
+              <button class="btn-gray" onclick="nextCard()">Next</button>
+              <button class="btn-green" onclick="rateCurrent('easy')">Mark Easy</button>
+              <button class="btn-orange" onclick="rateCurrent('hard')">Mark Hard</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleCard(){
+      if(!filteredCards.length) return;
+      showingAnswer = !showingAnswer;
+      render();
+    }
+
+    function nextCard(){
+      if(!filteredCards.length) return;
+      currentIndex = (currentIndex + 1) % filteredCards.length;
+      showingAnswer = false;
+      render();
+    }
+
+    function prevCard(){
+      if(!filteredCards.length) return;
+      currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
+      showingAnswer = false;
+      render();
+    }
+
+    function shuffleCards(){
+      cards = [...cards].sort(() => Math.random() - 0.5);
+      saveCards();
+      applyFilters();
+    }
+
+    function resetDeck(){
+      localStorage.removeItem("areCards");
+      cards = starterCards.map(card => ({ ...card, rating: "" }));
+      searchInput.value = "";
+      filterMode.value = "all";
+      currentIndex = 0;
+      showingAnswer = false;
+      saveCards();
+      applyFilters();
+    }
+
+    function rateCurrent(value){
+      if(!filteredCards.length) return;
+      const currentCardId = filteredCards[currentIndex].id;
+      cards = cards.map(card =>
+        card.id === currentCardId ? { ...card, rating: value } : card
+      );
+      saveCards();
+      applyFilters();
+    }
+
+    searchInput.addEventListener("input", () => {
+      currentIndex = 0;
+      applyFilters();
+    });
+
+    filterMode.addEventListener("change", () => {
+      currentIndex = 0;
+      applyFilters();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(e.code === "Space"){
+        e.preventDefault();
+        toggleCard();
+      }
+      if(e.code === "ArrowRight") nextCard();
+      if(e.code === "ArrowLeft") prevCard();
+    });
+
+    applyFilters();
+  </script>
+</body>
+</html>
